@@ -34,6 +34,6 @@ const CameraRig = ({ children }) => {
   return <group ref={group}>{children}</group>;
 };
 CameraRig.propTypes = {
-  children: PropTypes.element
+  children: PropTypes.arrayOf(PropTypes.element)
 }
 export default CameraRig;
