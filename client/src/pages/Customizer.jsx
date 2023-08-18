@@ -28,7 +28,6 @@ const Customizer = () => {
 
   // show tab content depending on the active tab
   const generateTabContent = () => {
-    console.log("generating content");
     switch (activeEditorTab) {
       case "colorpicker":
         return <ColorPicker />;
@@ -39,11 +38,29 @@ const Customizer = () => {
                 readFile={readFile}
                 />;
       case "aipicker":
-        return <AIPicker />;
+        return <AIPicker 
+              prompt={prompt}
+              setPrompt={setPrompt}
+              generatingImg={generatingImg}
+              handleSubmit={handleSubmit}
+            />;
       default:
         return null;
     }
   };
+
+  const handleSubmit = async (type) => {
+    if(!prompt) return alert("Please enter a prompt");
+
+    try {
+      // call our backend to generate an ai image
+    } catch (error) {
+      alert(error)
+    } finally {
+      setGeneratingImg(false)
+      setActiveEditorTab("")
+    }
+  }
 
   const readFile = (type) => {
     reader(file)
@@ -74,6 +91,13 @@ const Customizer = () => {
         state.isFullTexture = false;
         break;
     }
+
+    setActiveFilterTab((prevState) => {
+      return {
+        ...prevState,
+        [tabName]: !prevState[tabName],
+      }
+    })
   }
   return (
     <AnimatePresence>
@@ -113,8 +137,8 @@ const Customizer = () => {
                 key={tab.name}
                 tab={tab}
                 isFilterTab
-                isActiveTab={false}
-                handleClick={() => {}}
+                isActiveTab={activeFilterTab[tab.name]}
+                handleClick={() => handleActiveFilterTab(tab.name)}
               />
             ))}
           </motion.div>
